@@ -7,7 +7,7 @@ const Player: React.FC<PlayerType> = ({ name, symbol, id }) => {
 
   const handleEditClick = () : void => {
     
-    setIsEditing(!isEditing);
+    setIsEditing((editing) => !editing);
   }
 
   let playerNameElement = <span className="player-name">{playerName}</span>;
