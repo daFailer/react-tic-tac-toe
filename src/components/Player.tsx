@@ -2,18 +2,22 @@ import type { PlayerType } from '../types/players';
 
 import { useState } from 'react';
 
-const Player: React.FC<PlayerType> = ({ name, symbol, id }) => {
+const Player: React.FC<PlayerType> = ({ name, symbol }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [playerName, setPlayerName] = useState(name);
 
-  const handleEditClick = () : void => {
-    
+  const handleEditClick = () : void => {    
     setIsEditing((editing) => !editing);
+  }
+
+  const handleChange = (e) => {
+    setPlayerName(e.target.value);
   }
 
   let playerNameElement = <span className="player-name">{playerName}</span>;
 
   if (isEditing) {
-    playerNameElement = <input type="text" required defaultValue={playerName} />;
+    playerNameElement = <input type="text" required value={playerName} onChange={handleChange}/>;
   }
 
   return (
