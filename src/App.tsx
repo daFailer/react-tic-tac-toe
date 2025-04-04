@@ -1,4 +1,5 @@
-import { Players } from './components/Players'
+import { Players } from './components/Players';
+import GameBoard from './components/GameBoard';
 
 import './App.scss'
 
@@ -9,7 +10,7 @@ function App() {
       <div id="game-container">
         <Players />
 
-        GAME BOARD
+        <GameBoard />
       </div>
 
       LOG
