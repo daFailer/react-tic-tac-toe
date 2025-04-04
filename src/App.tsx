@@ -1,5 +1,6 @@
 import { Players } from './components/Players';
 import GameBoard from './components/GameBoard';
+import Log from './components/Log';
 
 import './App.scss'
 
@@ -13,7 +14,7 @@ function App() {
         <GameBoard />
       </div>
 
-      LOG
+      <Log />
     </main>
   )
 }
