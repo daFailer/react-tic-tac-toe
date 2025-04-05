@@ -2,7 +2,7 @@ import type { PlayerType } from '../types/players';
 
 import { useState } from 'react';
 
-const Player: React.FC<PlayerType> = ({ name, symbol }) => {
+const Player: React.FC<PlayerType> = ({ name, symbol, isActive }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [playerName, setPlayerName] = useState(name);
 
@@ -21,7 +21,7 @@ const Player: React.FC<PlayerType> = ({ name, symbol }) => {
   }
 
   return (
-    <li>
+    <li className={isActive ? 'active' : undefined}>
       <span className="player">
         {playerNameElement}
         <span className="player-symbol">{symbol}</span>

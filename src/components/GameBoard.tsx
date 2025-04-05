@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import type { PlayerType } from '../types/players';
 import GameField from './GameField';
 
 type GameBoard = {
@@ -82,15 +83,22 @@ const initialGameBoard : GameBoard[][] = [
   ]
 ];
 
-const GameBoard = () => {
+const GameBoard = ({ players, onSelectSquare }: { players: [PlayerType, PlayerType], onSelectSquare: () => void }) => {
   const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
+  const activePlayer: PlayerType = players.find((player) => player.isActive) as PlayerType;
+
   const handleClickSquare = (rowIndex: number, colIndex: number, playerSymbol: string = 'x') => {
+    
     setGameBoard((prevGameBoard) => {
       const updatedGameBoard = [...prevGameBoard.map(innerArray => [...innerArray])];
       
-      prevGameBoard[rowIndex][colIndex].value = playerSymbol;
-
+      if (!updatedGameBoard[rowIndex][colIndex].value) {
+        updatedGameBoard[rowIndex][colIndex].value = playerSymbol;
+        
+        onSelectSquare();
+      }
+      
       return updatedGameBoard;
     })
     
@@ -104,7 +112,7 @@ const GameBoard = () => {
           <li key={rowIndex}>
             <ol>
               {row.map((col, colIndex) => 
-                  <GameField key={col.id} value={col.value} onInteraction={() => handleClickSquare(rowIndex, colIndex)} />
+                  <GameField key={col.id} value={col.value} onInteraction={() => handleClickSquare(rowIndex, colIndex, activePlayer.symbol)} />
               )}
             </ol>
           </li>
