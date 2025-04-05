@@ -1,12 +1,12 @@
-const GameField = ({id, symbol, isActive, xPos, yPos}) : JSX.Element => {
+interface GameFieldProps {
+  value: string | null;
+  onInteraction?: () => void;
+}
 
-  const handleClick = (argument: number) : void => {
-    console.log(argument)
-  }
-
+const GameField = ({value, onInteraction}: GameFieldProps): React.JSX.Element => {
   return (
-    <li key={id}>
-      <button onClick={() => handleClick(id)}>{id}</button>
+    <li>
+      <button onClick={onInteraction}>{value}</button>
     </li>
   );
 }
