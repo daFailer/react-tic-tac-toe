@@ -1,6 +1,3 @@
-import { useState } from 'react';
-
-import type { PlayerType } from '../types/players';
 import GameField from './GameField';
 
 type GameBoard = {
@@ -83,27 +80,36 @@ const initialGameBoard : GameBoard[][] = [
   ]
 ];
 
-const GameBoard = ({ players, onSelectSquare }: { players: [PlayerType, PlayerType], onSelectSquare: () => void }) => {
-  const [gameBoard, setGameBoard] = useState(initialGameBoard);
+const GameBoard = ({ turns, onSelectSquare, players}) => {
 
-  const activePlayer: PlayerType = players.find((player) => player.isActive) as PlayerType;
+  const gameBoard = initialGameBoard;
 
-  const handleClickSquare = (rowIndex: number, colIndex: number, playerSymbol: string = 'x') => {
+  for (const turn of turns) {
+    const { square, player } = turn;
+    const {xPos, yPos } = square;
+    const { symbol } = player;
     
-    setGameBoard((prevGameBoard) => {
-      const updatedGameBoard = [...prevGameBoard.map(innerArray => [...innerArray])];
-      
-      if (!updatedGameBoard[rowIndex][colIndex].value) {
-        updatedGameBoard[rowIndex][colIndex].value = playerSymbol;
-        
-        onSelectSquare();
-      }
-      
-      return updatedGameBoard;
-    })
-    
-    
+    gameBoard[yPos][xPos].value = symbol;
   }
+  
+  // const [gameBoard, setGameBoard] = useState(initialGameBoard);
+
+  // const handleClickSquare = (rowIndex: number, colIndex: number, playerSymbol: string = 'x') => {
+    
+  //   setGameBoard((prevGameBoard) => {
+  //     const updatedGameBoard = [...prevGameBoard.map(innerArray => [...innerArray])];
+      
+  //     if (!updatedGameBoard[rowIndex][colIndex].value) {
+  //       updatedGameBoard[rowIndex][colIndex].value = playerSymbol;
+        
+  //       onSelectSquare();
+  //     }
+      
+  //     return updatedGameBoard;
+  //   })
+    
+    
+  // }
 
   return (
     <div id="game-board">
@@ -112,7 +118,7 @@ const GameBoard = ({ players, onSelectSquare }: { players: [PlayerType, PlayerTy
           <li key={rowIndex}>
             <ol>
               {row.map((col, colIndex) => 
-                  <GameField key={col.id} value={col.value} onInteraction={() => handleClickSquare(rowIndex, colIndex, activePlayer.symbol)} />
+                  <GameField key={col.id} value={col.value} rowIndex={rowIndex} colIndex={colIndex} players={players} onInteraction={onSelectSquare} />
               )}
             </ol>
           </li>
