@@ -28,28 +28,34 @@ function App() {
   const [playersStats, setPlayersStats] = useState(initialPlayers);
   const [gameTurns, setGameTurns] = useState<string[]>([]);
 
-  const handleSelectSquare = (prevPlayersStats: [PlayerType, PlayerType], rowIndex: number, colIndex: number) : void => {
-    console.log(rowIndex, colIndex);
-    
-    const updatedPlayerStats: [PlayerType, PlayerType] = [...prevPlayersStats];
+  const handleEditPlayer = (e, playerId) => {
 
-    updatedPlayerStats[0].isActive = !updatedPlayerStats[0].isActive;
-    updatedPlayerStats[1].isActive = !updatedPlayerStats[1].isActive;
+    let newPlayersStats = [...playersStats];
 
-    setPlayersStats(updatedPlayerStats);
-
-    setGameTurns((prevTurns) => {
-      let currentPlayer = {
-        id: 1,
-        name: 'Player 1',
-        symbol: 'X',
-        isActive: true,
-      };
-
-      if (prevTurns.length > 0 && JSON.stringify(prevPlayersStats.find((player) => player.isActive === true)) === JSON.stringify(currentPlayer)) {
-        currentPlayer = prevPlayersStats.find((player) => player.isActive === false);
+    newPlayersStats = newPlayersStats.map(player => {
+      if (player.id === playerId) {
+        return {
+          ...player,
+          name: e.target.value,
+        };
       }
+      return player;
 
+    });
+    setPlayersStats(newPlayersStats);
+  }
+
+  const handleSelectSquare = (prevPlayersStats: [PlayerType, PlayerType], rowIndex: number, colIndex: number): void => {
+    setGameTurns((prevTurns) => {
+      const lastPlayerId = prevTurns[0]?.player?.id;
+      const activePlayer = prevPlayersStats.find((player) => player.isActive)!;
+  
+      let currentPlayer = activePlayer;
+      
+      if (lastPlayerId === activePlayer.id) {
+        currentPlayer = prevPlayersStats.find((player) => player.id !== activePlayer.id)!;
+      }
+  
       const updatedTurns = [
         {
           square: {
@@ -57,19 +63,31 @@ function App() {
             yPos: rowIndex,
           },
           player: currentPlayer,
-
         },
-        ...prevTurns
+        ...prevTurns,
       ];
-
+  
       return updatedTurns;
-    })
+    });
+  
+    const updatedPlayerStats: [PlayerType, PlayerType] = [...prevPlayersStats];
+  
+    updatedPlayerStats[0] = {
+      ...updatedPlayerStats[0],
+      isActive: !updatedPlayerStats[0].isActive,
+    };
+    updatedPlayerStats[1] = {
+      ...updatedPlayerStats[1],
+      isActive: !updatedPlayerStats[1].isActive,
+    };
+  
+    setPlayersStats(updatedPlayerStats);
   };
 
   return (
     <main>
       <div id="game-container">
-        <Players players={playersStats} />
+        <Players players={playersStats} onEditPlayer={handleEditPlayer} />
 
         <GameBoard
           onSelectSquare={handleSelectSquare}
@@ -78,7 +96,7 @@ function App() {
         />
       </div>
 
-      <Log />
+      <Log turns={gameTurns}/>
     </main>
   )
 }

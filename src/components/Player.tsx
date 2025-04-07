@@ -2,22 +2,17 @@ import type { PlayerType } from '../types/players';
 
 import { useState } from 'react';
 
-const Player: React.FC<PlayerType> = ({ name, symbol, isActive }) => {
+const Player: React.FC<PlayerType> = ({ name, symbol, isActive, onEditName, id }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [playerName, setPlayerName] = useState(name);
-
-  const handleEditClick = () : void => {    
+  
+  const handleEditClick = (playerId) : void => {    
     setIsEditing((editing) => !editing);
   }
 
-  const handleChange = (e) => {
-    setPlayerName(e.target.value);
-  }
-
-  let playerNameElement = <span className="player-name">{playerName}</span>;
+  let playerNameElement = <span className="player-name">{name}</span>;
 
   if (isEditing) {
-    playerNameElement = <input type="text" required value={playerName} onChange={handleChange}/>;
+    playerNameElement = <input type="text" required value={name} onChange={() => onEditName(event, id)}/>;
   }
 
   return (
@@ -26,7 +21,7 @@ const Player: React.FC<PlayerType> = ({ name, symbol, isActive }) => {
         {playerNameElement}
         <span className="player-symbol">{symbol}</span>
       </span>
-      <button onClick={handleEditClick}>{isEditing ? 'Save' : 'Edit'}</button>
+      <button onClick={() => handleEditClick(id)}>{isEditing ? 'Save' : 'Edit'}</button>
     </li>
   );
 }
