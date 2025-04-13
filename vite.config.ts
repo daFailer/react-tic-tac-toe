@@ -6,7 +6,7 @@ export default defineConfig(({ mode }) => {
   let base = '/'
 
   if (mode === 'test') {
-    base = '/svg-encoder/'
+    base = '/react-tic-tac-toe/'
   }
 
   return {
