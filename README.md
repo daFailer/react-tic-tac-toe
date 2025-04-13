@@ -1,4 +1,5 @@
 # React + TypeScript + Vite
+[![Build Status](https://drone.maniacbox.synology.me/api/badges/daFailer/react-tic-tac-toe/status.svg?ref=refs/heads/main)](https://drone.maniacbox.synology.me/daFailer/react-tic-tac-toe)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
