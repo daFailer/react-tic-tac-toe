@@ -11,7 +11,12 @@ interface GameFieldProps {
 const GameField = ({value, onInteraction, rowIndex, colIndex, players}: GameFieldProps): React.JSX.Element => {
   return (
     <li>
-      <button onClick={() => onInteraction(players, rowIndex, colIndex)} disabled={value ? true : undefined}>{value}</button>
+      <button 
+        onClick={() => onInteraction && onInteraction(players, rowIndex, colIndex)} 
+        disabled={value ? true : undefined}
+      >
+        {value}
+      </button>
     </li>
   );
 }

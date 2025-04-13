@@ -102,9 +102,13 @@ function App() {
       let currentPlayer = activePlayer;
       
       if (lastPlayerId === currentPlayer?.id) {
-        currentPlayer = prevPlayersStats.find((player) => player.id !== currentPlayer?.id)!;
+        currentPlayer = prevPlayersStats.find((player) => player.id !== currentPlayer?.id);
       }
   
+      if (!currentPlayer) {
+        return prevTurns; // Return unchanged if no player found
+      }
+
       const updatedTurns = [
         {
           square: {
@@ -149,7 +153,9 @@ function App() {
         />}
         <GameBoard
           gameBoardLayout={gameBoardLayout as gameBoardLayout[][]}
-          onSelectSquare={(players: [PlayerType, PlayerType], rowIndex: number, colIndex: number) => handleSelectSquare(players, rowIndex, colIndex)}
+          onSelectSquare={(players, rowIndex, colIndex) => 
+            handleSelectSquare(players as [PlayerType, PlayerType], rowIndex, colIndex)
+          }
           players={playersStats}
         />
       </div>

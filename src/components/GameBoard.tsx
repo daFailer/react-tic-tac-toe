@@ -10,7 +10,16 @@ const GameBoard = ({ gameBoardLayout, onSelectSquare, players}: { gameBoardLayou
           <li key={rowIndex}>
             <ol>
               {row.map((col, colIndex) => 
-                  <GameField key={col.id} value={col.value} rowIndex={rowIndex} colIndex={colIndex} players={players} onInteraction={(players: [PlayerType, PlayerType], rowIndex: number, colIndex: number) => onSelectSquare(players, rowIndex, colIndex)} />
+                  <GameField 
+                    key={col.id} 
+                    value={col.value} 
+                    rowIndex={rowIndex} 
+                    colIndex={colIndex} 
+                    players={players} 
+                    onInteraction={(players, rowIndex, colIndex) => 
+                      onSelectSquare(players, rowIndex, colIndex)
+                    } 
+                  />
               )}
             </ol>
           </li>
