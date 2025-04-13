@@ -1,4 +1,4 @@
-const GameOver = ({ name, onRestartGame }) => {
+const GameOver = ({ name, onRestartGame }: { name: string, onRestartGame: () => void }) => {
   let message = 'It\'s a draw!';
 
   if (name) {

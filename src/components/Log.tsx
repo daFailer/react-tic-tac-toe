@@ -1,4 +1,6 @@
-const Log = ({turns = []}): React.ReactElement => {
+import type { GameTurn } from '../types/gameTurn';
+
+const Log = ({turns = [] as GameTurn[]}): React.ReactElement => {
   return (
     <ol id="log">
       {turns.map((turn) => (

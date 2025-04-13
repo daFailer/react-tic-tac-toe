@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import type { PlayerType } from './types/players';
+import type { GameTurn } from './types/gameTurn';
+import type { gameBoardLayout } from './types/gameBoardLayout';
 
 import { Players } from './components/Players';
 import GameBoard from './components/GameBoard';
@@ -26,20 +28,12 @@ const initialPlayers: [PlayerType, PlayerType] = [
   },
 ];
 
-type GameTurn = {
-  square: {
-    xPos: number;
-    yPos: number;
-  };
-  player: PlayerType;
-};
-
 function App() {
   const [playersStats, setPlayersStats] = useState(initialPlayers);
   const [gameTurns, setGameTurns] = useState<GameTurn[]>([]);
   let winnerPlayer;
 
-  const gameBoardLayout = [...initialGameBoard.map((row) => [...row].map((cell) => ({ ...cell })))];
+  const gameBoardLayout: gameBoardLayout[][] = [...initialGameBoard.map((row) => [...row].map((cell) => ({ ...cell })))];
 
   for (const turn of gameTurns) {
     const { square, player } = turn;
@@ -50,7 +44,7 @@ function App() {
   }
 
   for (const winningCombination of WINNING_COMBINATIONS) {
-    let winnerSymbol;
+    let winnerSymbol: string;
 
     const firstSquareSymbol = gameBoardLayout[winningCombination[0].row][winningCombination[0].column].value;
     const secondSquareSymbol = gameBoardLayout[winningCombination[1].row][winningCombination[1].column].value;
@@ -82,7 +76,7 @@ function App() {
       return player;
     });
 
-    setPlayersStats(newPlayersStats);
+    setPlayersStats(newPlayersStats as [PlayerType, PlayerType]);
 
     setGameTurns(prevTurns => {
       return prevTurns.map(turn => {
@@ -101,14 +95,14 @@ function App() {
   };
 
   const handleSelectSquare = (prevPlayersStats: [PlayerType, PlayerType], rowIndex: number, colIndex: number): void => {
-    setGameTurns((prevTurns) => {
+    setGameTurns((prevTurns: GameTurn[]) => {
       const lastPlayerId = prevTurns[0]?.player?.id;
       const activePlayer = prevPlayersStats.find((player) => player.isActive);
   
       let currentPlayer = activePlayer;
       
-      if (lastPlayerId === activePlayer.id) {
-        currentPlayer = prevPlayersStats.find((player) => player.id !== activePlayer.id)!;
+      if (lastPlayerId === currentPlayer?.id) {
+        currentPlayer = prevPlayersStats.find((player) => player.id !== currentPlayer?.id)!;
       }
   
       const updatedTurns = [
@@ -150,12 +144,12 @@ function App() {
         <Players players={playersStats} onEditPlayer={handleEditPlayer} />
 
         { (winnerPlayer || hasDraw) && <GameOver
-          name={winnerPlayer?.name} 
+          name={winnerPlayer?.name as string} 
           onRestartGame={RestartGame}
         />}
         <GameBoard
-          gameBoardLayout={gameBoardLayout}
-          onSelectSquare={handleSelectSquare}
+          gameBoardLayout={gameBoardLayout as gameBoardLayout[][]}
+          onSelectSquare={(players: [PlayerType, PlayerType], rowIndex: number, colIndex: number) => handleSelectSquare(players, rowIndex, colIndex)}
           players={playersStats}
         />
       </div>

@@ -2,7 +2,7 @@ import { PlayerType } from "../types/players";
 
 interface GameFieldProps {
   value: string | null;
-  onInteraction?: () => void;
+  onInteraction?: (players: PlayerType[], rowIndex: number, colIndex: number) => void;
   rowIndex: number;
   colIndex: number;
   players: PlayerType[];

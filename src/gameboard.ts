@@ -1,12 +1,6 @@
-type GameBoard = {
-  id: number;
-  value: string | null;
-  isActive: boolean;
-  xPos: number;
-  yPos: number;
-}
+import type { gameBoardLayout } from './types/gameBoardLayout';
 
-export const initialGameBoard : GameBoard[][] = [
+export const initialGameBoard : gameBoardLayout[][] = [
   [
     {
       id: 1,
